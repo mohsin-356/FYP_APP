@@ -64,11 +64,14 @@ const HomeScreen: React.FC = () => {
   return (
     <ScrollView style={{ flex: 1, padding: 10,
      marginBottom:10 ,backgroundColor: isDarkMode ? '#1F2937' : '#F3F4F6' }}>
-      <Cards/>
+      {/* <Cards/>
       <Paying/>
       <PiChart/>
-      <Revenue/>
-     
+      <Revenue/> */}
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Home Screen</Text>
+      </View>
+
     </ScrollView>
   );
 };

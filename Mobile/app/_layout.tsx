@@ -1,7 +1,3 @@
-
-
-// app/_layout.tsx
-// app/_layout.tsx
 import React, { useEffect, useState } from "react";
 import { Slot, useRouter } from "expo-router";
 import SplashScreen from "./splash";
@@ -13,10 +9,11 @@ function AppContent() {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      // Redirect to login after splash screen
-      router.replace("/(auth)/Login");
-    } else {
       router.replace("/(main)/");
+      // router.replace("/(auth)/Login");
+    } else {
+      // router.replace("/(main)/");
+      router.replace("/(auth)/Login");
     }
   }, [isLoggedIn]);
 
