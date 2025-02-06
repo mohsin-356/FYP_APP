@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-    StyleSheet,
     View,
     TextInput,
     TouchableOpacity,
@@ -12,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
-
+import styles from '@/Styles/Auth/sighnUp';
 export default function RegisterScreen() {
     const router = useRouter();
     const [form, setForm] = useState({
@@ -82,7 +81,7 @@ export default function RegisterScreen() {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.formContainer}>
                 <View style={styles.logoContainer}>
                     <Ionicons name="person-add" size={80} color="#000" />
@@ -96,7 +95,7 @@ export default function RegisterScreen() {
                     ) : (
                         <>
                             <Ionicons name="camera" size={30} color="#000" />
-                            <Text style={styles.uploadText}>Upload Profile Picture</Text>
+                            <Text style={styles.uploadText}>Upload Image</Text>
                         </>
                     )}
                 </TouchableOpacity>
@@ -234,106 +233,12 @@ export default function RegisterScreen() {
                     style={styles.loginLink} 
                     onPress={() => router.back()}
                 >
-                    <Text style={styles.loginLinkText}>Already have an account? Login</Text>
+                    <Text style={styles.loginLinkText}>
+                        Already have an account? <Text style={styles.boldText}>Login</Text>
+                    </Text>
+
                 </TouchableOpacity>
             </View>
         </ScrollView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flexGrow: 1,
-        justifyContent: 'center',
-        padding: 20,
-    },
-    formContainer: {
-        borderRadius: 20,
-        padding: 20,
-    },
-    logoContainer: {
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#000',
-        textAlign: 'center',
-        marginBottom: 30,
-    },
-    imageUploadContainer: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
-        backgroundColor: '#f0f0f0',
-        alignItems: 'center',
-        justifyContent: 'center',
-        alignSelf: 'center',
-        marginBottom: 20,
-        borderWidth: 1,
-        borderColor: '#555',
-        overflow: 'hidden',
-    },
-    uploadedImage: {
-        width: '100%',
-        height: '100%',
-    },
-    uploadText: {
-        marginTop: 5,
-        fontSize: 12,
-        color: '#666',
-        textAlign: 'center',
-    },
-    inputContainer: {
-        marginBottom: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#555',
-    },
-    inputIcon: {
-        padding: 10,
-        marginLeft: 5,
-    },
-    input: {
-        flex: 1,
-        padding: 15,
-        fontSize: 16,
-        color: '#000',
-    },
-    eyeIcon: {
-        padding: 10,
-        marginRight: 5,
-        borderLeftColor: "black",
-        borderLeftWidth: 1,
-    },
-    registerButton: {
-        backgroundColor: '#000',
-        padding: 15,
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
-    },
-    buttonIcon: {
-        marginRight: 10,
-    },
-    registerButtonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    loginLink: {
-        marginTop: 15,
-        alignItems: 'center',
-    },
-    loginLinkText: {
-        color: '#000',
-        fontSize: 16,
-        textDecorationLine: 'underline',
-    },
-});

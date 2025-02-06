@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Search, Filter, ChevronRight, Plus } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
+import styles from '@/Styles/User/user';
 const UserIndexPage = () => {
     interface User {
         id: string;
@@ -66,7 +67,10 @@ const router=useRouter();
                 </View>
             </View>
             <TouchableOpacity onPress={() => router.push('./Users/UserProfile')}>
-                <ChevronRight color="#6B7280" size={24} />
+                <View style={styles.chevron}>
+                    <ChevronRight color="black" size={30} />
+                </View>
+                
             </TouchableOpacity>
            
         </View>
@@ -75,9 +79,7 @@ const router=useRouter();
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Users</Text>
                 <View style={styles.searchBar}>
-                    <Search color="#6B7280" size={20} />
                     <TextInput
                         placeholder="Search users..."
                         placeholderTextColor="#9CA3AF"
@@ -86,7 +88,7 @@ const router=useRouter();
                         style={styles.searchInput}
                     />
                     <TouchableOpacity style={styles.filterButton}>
-                        <Filter color="white" size={20} />
+                        <Search color="#ffffff" size={20} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -112,45 +114,5 @@ const router=useRouter();
         </SafeAreaView>
     );
 };
-
-const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#F3F4F6' },
-    header: { padding: 15, backgroundColor: '#FFFFFF' },
-    headerTitle: { fontSize: 24, fontWeight: 'bold', color: '#1F2937', marginBottom: 10 },
-    searchBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#F9FAFB', borderRadius: 10 },
-    searchInput: { flex: 1, padding: 10, color: '#1F2937' },
-    filterButton: { backgroundColor: '#6366F1', padding: 10, borderRadius: 10 },
-    listContent: { padding: 15 },
-    userItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#FFFFFF',
-        padding: 15,
-        marginVertical: 5,
-        borderRadius: 10,
-        elevation: 3,
-    },
-    userImage: { width: 50, height: 50, borderRadius: 25 },
-    userInfo: { marginLeft: 15, flex: 1 },
-    userName: { fontSize: 16, fontWeight: 'bold', color: '#1F2937' },
-    userEmail: { fontSize: 14, color: '#6B7280' },
-    userTags: { flexDirection: 'row', marginTop: 5 },
-    tag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 15, fontSize: 12, marginRight: 10, color: 'white' },
-    adminTag: { backgroundColor: '#10B981' },
-    userTag: { backgroundColor: '#3B82F6' },
-    activeTag: { backgroundColor: '#10B981' },
-    inactiveTag: { backgroundColor: '#EF4444' },
-    emptyList: { alignItems: 'center', justifyContent: 'center', marginTop: 50 },
-    emptyText: { fontSize: 18, color: '#6B7280' },
-    fab: {
-        position: 'absolute',
-        bottom: 20,
-        right: 20,
-        backgroundColor: '#6366F1',
-        borderRadius: 30,
-        padding: 15,
-        elevation: 5,
-    },
-});
 
 export default UserIndexPage;

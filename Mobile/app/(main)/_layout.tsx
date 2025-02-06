@@ -5,36 +5,24 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { SettingsProvider } from "@/themes/SettingsContext"; // Import SettingsProvider
 import { EventRegister } from "react-native-event-listeners";
 import { useRouter } from "expo-router";
-// Import your splash screen
 import LoginScreen from "@/app/(auth)/Login";
 import { Slot } from "expo-router";
 export default function Layout() {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [selectedFont, setSelectedFont] = useState("Roboto");
+
   const [isSplashVisible, setIsSplashVisible] = useState(true); 
   const [isLogged, setIsLogged] = useState(true);
 
   useEffect(() => {
-    // Splash Screen Timer
-    const splashTimer = setTimeout(() => {
-      setIsSplashVisible(false);
-    }, 3000); 
-
     // Theme and Font listeners
     const themeListener = EventRegister.addEventListener("ChangeTheme", (data: boolean) => {
       setIsDarkMode(data);
     });
-    const fontListener = EventRegister.addEventListener("ChangeFont", (font: string) => {
-      setSelectedFont(font);
-    });
+
 
     return () => {
-      // clearTimeout(splashTimer);
       if (typeof themeListener === "string") {
         EventRegister.removeEventListener(themeListener);
-      }
-      if (typeof fontListener === "string") {
-        EventRegister.removeEventListener(fontListener);
       }
     };
   }, []);
@@ -43,7 +31,7 @@ export default function Layout() {
     drawerLabelStyle: {
       marginLeft: 10,
       color: isDarkMode ? "#F3F4F6" : "#1F2937",
-      fontFamily: selectedFont,
+     
     },
     drawerStyle: {
       backgroundColor: isDarkMode ? "#1F2937" : "#F3F4F6",
@@ -99,7 +87,19 @@ export default function Layout() {
            
           }}
         />
-        {/* Orders Screen */}
+
+          {/* Users Screen */}
+          <Drawer.Screen
+            name="Users"
+            options={{
+              drawerLabel: 'Users',
+              headerTitle: 'Users Panel',
+              headerStyle: dynamicStyles.headerStyle,
+              headerTintColor: dynamicStyles.headerTintColor,
+              drawerIcon: ({ color, size }) => <MaterialIcons name="people" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
+            }}
+          />
+       
         <Drawer.Screen
           name="Orders"
           options={{
@@ -143,17 +143,7 @@ export default function Layout() {
             drawerIcon: ({ color, size }) => <MaterialIcons name="person-outline" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
           }}
         />
-        {/* Users Screen */}
-        <Drawer.Screen
-          name="Users"
-          options={{
-            drawerLabel: 'Users',
-            headerTitle: 'Users Panel',
-            headerStyle: dynamicStyles.headerStyle,
-            headerTintColor: dynamicStyles.headerTintColor,
-            drawerIcon: ({ color, size }) => <MaterialIcons name="people" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
-          }}
-        />
+     
         {/* Workers Screen */}
         <Drawer.Screen
           name="Workers"
