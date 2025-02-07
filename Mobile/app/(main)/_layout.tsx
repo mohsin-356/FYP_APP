@@ -5,13 +5,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { SettingsProvider } from "@/themes/SettingsContext"; // Import SettingsProvider
 import { EventRegister } from "react-native-event-listeners";
 import { useRouter } from "expo-router";
-import LoginScreen from "@/app/(auth)/Login";
-import { Slot } from "expo-router";
 export default function Layout() {
   const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const [isSplashVisible, setIsSplashVisible] = useState(true); 
-  const [isLogged, setIsLogged] = useState(true);
 
   useEffect(() => {
     // Theme and Font listeners
@@ -99,43 +94,47 @@ export default function Layout() {
               drawerIcon: ({ color, size }) => <MaterialIcons name="people" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
             }}
           />
-       
-        <Drawer.Screen
+          {/* Products Screen */}
+          <Drawer.Screen
+            name="Products"
+            options={{
+              drawerLabel: 'Products',
+              headerTitle: 'Products Panel',
+              headerStyle: dynamicStyles.headerStyle,
+              headerTintColor: dynamicStyles.headerTintColor,
+              drawerIcon: ({ color, size }) => <MaterialIcons name="shopping-cart" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
+            }}
+          />
+
+         <Drawer.Screen
           name="Orders"
           options={{
+            drawerItemStyle: { display: 'none' },
             drawerLabel: 'Orders',
             headerTitle: 'Orders Panel',
             headerStyle: dynamicStyles.headerStyle,
             headerTintColor: dynamicStyles.headerTintColor,
             drawerIcon: ({ color, size }) => <MaterialIcons name="list-alt" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
           }}
-        />
-        {/* Suppliers Screen */}
+        /> 
+       
         <Drawer.Screen
           name="Suppliers"
           options={{
+            drawerItemStyle: { display: 'none' },
             drawerLabel: 'Suppliers',
             headerTitle: 'Supplier Panel',
             headerStyle: dynamicStyles.headerStyle,
             headerTintColor: dynamicStyles.headerTintColor,
             drawerIcon: ({ color, size }) => <MaterialIcons name="group" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
           }}
-        />
-        {/* Products Screen */}
-        <Drawer.Screen
-          name="Products"
-          options={{
-            drawerLabel: 'Products',
-            headerTitle: 'Products Panel',
-            headerStyle: dynamicStyles.headerStyle,
-            headerTintColor: dynamicStyles.headerTintColor,
-            drawerIcon: ({ color, size }) => <MaterialIcons name="shopping-cart" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
-          }}
-        />
-        {/* Profile Screen */}
-        <Drawer.Screen
+        /> 
+      
+     
+       <Drawer.Screen
           name="Profile"
           options={{
+            drawerItemStyle: { display: 'none' },
             drawerLabel: 'Profile',
             headerTitle: 'Users Panel',
             headerStyle: dynamicStyles.headerStyle,
@@ -144,10 +143,11 @@ export default function Layout() {
           }}
         />
      
-        {/* Workers Screen */}
+      
         <Drawer.Screen
           name="Workers"
           options={{
+            drawerItemStyle: { display: 'none' },
             drawerLabel: 'Workers',
             headerTitle: 'Workers Panel',
             headerStyle: dynamicStyles.headerStyle,
@@ -155,18 +155,19 @@ export default function Layout() {
             drawerIcon: ({ color, size }) => <MaterialIcons name="work" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
           }}
         />
-        {/* Settings Screen */}
+        
         <Drawer.Screen
           name="Settings"
           options={{
+            drawerItemStyle: { display: 'none' },
             drawerLabel: 'Settings',
             headerTitle: 'Settings Panel',
             headerStyle: dynamicStyles.headerStyle,
             headerTintColor: dynamicStyles.headerTintColor,
             drawerIcon: ({ color, size }) => <MaterialIcons name="settings" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
           }}
-        />
-        {/* Logout Screen */}
+        /> 
+    
         <Drawer.Screen
           name="Logout"
           options={{

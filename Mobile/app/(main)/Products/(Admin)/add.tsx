@@ -2,20 +2,18 @@ import React, { useState } from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     TextInput,
     TouchableOpacity,
     Alert,
     ScrollView,
     Image,
-    Dimensions
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Use '@expo/vector-icons' for Expo projects
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
 import { useSettings } from "@/themes/SettingsContext"; // Ensure this path is correct
-
-const { width } = Dimensions.get('window');
+import createStyles from '@/Styles/Products/addProduct';
+import ToastMessage,{showToast} from '@/components/ToastMessage';
 
 const AddProducts = () => {
     const { isDarkMode } = useSettings();
@@ -47,7 +45,7 @@ const AddProducts = () => {
 
     const handleSubmit = () => {
         if (!productName || !description || !price || !stock || !sku || !category) {
-            Alert.alert('Error', 'Please fill in all required fields.');
+            showToast('error', 'Please fill in all required fields.');
             return;
         }
         console.log('Product Data:', {
@@ -74,16 +72,16 @@ const AddProducts = () => {
         setDimensions({ length: '', width: '', height: '' });
         setInProduction(false);
         setCategory('');
-        Alert.alert('Product Added', 'Your product has been successfully added.');
+        showToast('success', 'Your product has been successfully added.');
     };
 
     const styles = createStyles(isDarkMode);
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.scrollViewContent}>
-            {/* Form Container */}
+        
             <View style={styles.formContainer}>
-                {/* Image Picker */}
+            
                 <View style={styles.imagePickerContainer}>
                     <TouchableOpacity onPress={handleImagePick} style={styles.imagePickerButton}>
                         {image ? (
@@ -96,7 +94,7 @@ const AddProducts = () => {
 
                 {/* Product Name Input */}
                 <View style={styles.inputWrapper}>
-                    <Ionicons name="cube" size={24} color={isDarkMode ? "#FFFFFF" : "#000000"} />
+                    <Ionicons name="cube" size={26} color={isDarkMode ? "#FFFFFF" : "#000000"} />
                     <TextInput
                         style={[styles.input, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}
                         placeholder="Product Name"
@@ -108,7 +106,7 @@ const AddProducts = () => {
 
                 {/* SKU Input */}
                 <View style={styles.inputWrapper}>
-                    <Ionicons name="barcode" size={24} color={isDarkMode ? "#FFFFFF" : "#000000"} />
+                    <Ionicons name="barcode" size={26} color={isDarkMode ? "#FFFFFF" : "#000000"} />
                     <TextInput
                         style={[styles.input, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}
                         placeholder="SKU"
@@ -120,7 +118,7 @@ const AddProducts = () => {
 
                 {/* Price Input */}
                 <View style={styles.inputWrapper}>
-                    <Ionicons name="cash" size={24} color={isDarkMode ? "#FFFFFF" : "#000000"} />
+                    <Ionicons name="cash" size={26} color={isDarkMode ? "#FFFFFF" : "#000000"} />
                     <TextInput
                         style={[styles.input, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}
                         placeholder="Price"
@@ -133,7 +131,7 @@ const AddProducts = () => {
 
                 {/* Stock Quantity Input */}
                 <View style={styles.inputWrapper}>
-                    <Ionicons name="layers" size={24} color={isDarkMode ? "#FFFFFF" : "#000000"} />
+                    <Ionicons name="layers" size={26} color={isDarkMode ? "#FFFFFF" : "#000000"} />
                     <TextInput
                         style={[styles.input, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}
                         placeholder="Stock Quantity"
@@ -146,7 +144,7 @@ const AddProducts = () => {
 
                 {/* Weight Input */}
                 <View style={styles.inputWrapper}>
-                    <Ionicons name="scale" size={24} color={isDarkMode ? "#FFFFFF" : "#000000"} />
+                    <Ionicons name="scale" size={26} color={isDarkMode ? "#FFFFFF" : "#000000"} />
                     <TextInput
                         style={[styles.input, { color: isDarkMode ? '#FFFFFF' : '#000000' }]}
                         placeholder="Weight (grams)"
@@ -159,7 +157,7 @@ const AddProducts = () => {
 
                 {/* Category Picker */}
                 <View style={styles.inputWrapper}>
-                    <Ionicons name="list" size={24} color={isDarkMode ? "#FFFFFF" : "#000000"} />
+                    <Ionicons name="list" size={26} color={isDarkMode ? "#FFFFFF" : "#000000"} />
                     <View style={[styles.pickerWrapper, { borderColor: isDarkMode ? '#9CA3AF' : '#6B7280' }]}>
                         <Picker
                             selectedValue={category}
@@ -177,7 +175,7 @@ const AddProducts = () => {
 
                 {/* Description Input */}
                 <View style={styles.inputWrapper}>
-                    <Ionicons name="document-text" size={24} color={isDarkMode ? "#FFFFFF" : "#000000"} />
+                    <Ionicons name="document-text" size={26} color={isDarkMode ? "#FFFFFF" : "#000000"} />
                     <TextInput
                         style={[
                             styles.input,
@@ -233,7 +231,7 @@ const AddProducts = () => {
 
                 {/* In Production Toggle */}
                 <View style={styles.inputWrapper}>
-                    <Ionicons name="construct" size={24} color={isDarkMode ? "#FFFFFF" : "#000000"} />
+                    <Ionicons name="construct" size={26} color={isDarkMode ? "#FFFFFF" : "#000000"} />
                     <TouchableOpacity
                         style={styles.checkboxContainer}
                         onPress={() => setInProduction(!inProduction)}
@@ -256,141 +254,11 @@ const AddProducts = () => {
                     <Text style={styles.submitButtonText}>Add Product</Text>
                 </TouchableOpacity>
             </View>
+            <ToastMessage />
         </ScrollView>
     );
 };
 
-const createStyles = (isDarkMode: any) =>
-    StyleSheet.create({
-        container: {
-            flex: 1,
-            padding: 10,
-            backgroundColor: isDarkMode ? '#1F2937' : '#F3F4F6',
-        },
-        scrollViewContent: {
-            paddingBottom: 24,
-        },
-        formContainer: {
-            borderRadius: 8,
-            padding: 10,
-            marginTop: 15,
-            backgroundColor: isDarkMode ? '#374151' : '#FFFFFF',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: isDarkMode ? 0.3 : 0.1,
-            shadowRadius: 4,
-            elevation: 5,
-        },
-        imagePickerContainer: {
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 16,
-        },
-        imagePickerButton: {
-            width: 100,
-            height: 100,
-            borderRadius: 50, // Circular shape
-            borderWidth: 1,
-            borderColor: isDarkMode ? '#9CA3AF' : '#000000',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: isDarkMode ? '#4B5563' : '#D1D5DB',
-        },
-        imagePreview: {
-            width: 100,
-            height: 100,
-            borderRadius: 50, // Circular shape for preview
-            resizeMode: 'cover',
-        },
-        inputWrapper: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 10,
-        },
-        input: {
-            flex: 1,
-            height: 40,
-            paddingHorizontal: 10,
-            borderWidth: 1,
-            borderColor: isDarkMode ? '#9CA3AF' : '#6B7280',
-            borderRadius: 8,
-            marginLeft: 10,
-            backgroundColor: isDarkMode ? '#374151' : '#E5E7EB',
-        },
-        multilineInput: {
-            minHeight: 60,
-            textAlignVertical: 'top',
-            paddingVertical: 10,
-        },
-        pickerWrapper: {
-            flex: 1,
-            justifyContent: 'center',
-            borderWidth: 1,
-            borderRadius: 8,
-            paddingHorizontal: 10,
-            marginLeft: 10,
-            paddingVertical: 4,
-            backgroundColor: isDarkMode ? '#374151' : '#E5E7EB',
-        },
-        picker: {
-            height: 30,
-            color: isDarkMode ? '#FFFFFF' : '#000000',
-        },
-        submitButton: {
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: 50,
-            borderRadius: 8,
-            backgroundColor: isDarkMode ? '#10b981' : '#059669',
-            marginTop: 20,
-        },
-        submitButtonText: {
-            fontSize: 16,
-            fontWeight: 'bold',
-            color: '#FFFFFF',
-        },
-        label: {
-            fontWeight: 'bold',
-            marginBottom: 4,
-            color: isDarkMode ? '#FFFFFF' : '#000000',
-        },
-        dimensionInputs: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginVertical: 4,
-        },
-        dimensionInput: {
-            flex: 1,
-            height: 40,
-            borderWidth: 1,
-            borderRadius: 8,
-            paddingHorizontal: 10,
-            marginHorizontal: 5,
-            backgroundColor: isDarkMode ? '#374151' : '#E5E7EB',
-            color: isDarkMode ? '#FFFFFF' : '#000000',
-        },
-        checkboxContainer: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginLeft: 10,
-            padding: 12,
-        },
-        checkbox: {
-            width: 18,
-            height: 18,
-            borderWidth: 1,
-            borderRadius: 4,
-            borderColor: '#000000',
-            backgroundColor: '#fff',
-            marginRight: 10,
-        },
-        checkboxChecked: {
-            borderColor: "#10b981",
-            backgroundColor: '#10b981',
-        },
-        checkboxLabel: {
-            fontSize: 14,
-        },
-    });
+
 
 export default AddProducts;

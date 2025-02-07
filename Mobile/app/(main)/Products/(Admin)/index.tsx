@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import {
     View,
     Text,
-    StyleSheet,
     Image,
     FlatList,
     TouchableOpacity,
@@ -14,10 +13,10 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
 import { useSettings } from "@/themes/SettingsContext";
-
+import styles from "@/Styles/Products/productindex";
+import ToastMessage,{showToast} from "@/components/ToastMessage";
 const ProductsPage = () => {
     const router = useRouter();
     const { isDarkMode } = useSettings();
@@ -192,7 +191,7 @@ const ProductsPage = () => {
                 backgroundColor="transparent"
             />
             {/* Header */}
-            <View style={styles.header}>
+            {/* <View style={styles.header}>
                 <Text
                     style={[
                         styles.headerTitle,
@@ -208,7 +207,7 @@ const ProductsPage = () => {
                         color={isDarkMode ? "#FFFFFF" : "black"}
                     />
                 </TouchableOpacity>
-            </View>
+            </View> */}
 
             {/* Search Bar */}
             <View
@@ -277,7 +276,7 @@ const ProductsPage = () => {
                 <Ionicons name="add" size={30} color="#ffffff" />
             </TouchableOpacity>
 
-            {/* Product Menu Modal */}
+            
             <Modal
                 visible={menuVisible}
                 transparent
@@ -302,7 +301,7 @@ const ProductsPage = () => {
                                         router.push('/Products/(Admin)/detail');
                                     }}
                                 >
-                                    <Ionicons name="eye-outline" size={20} color="#3b82f6" />
+                                    <Ionicons name="eye-outline" size={24} color="#3b82f6" />
                                     <Text style={styles.modalMenuText}>View Details</Text>
                                 </TouchableOpacity>
 
@@ -315,7 +314,7 @@ const ProductsPage = () => {
                                         router.push('/Products/(Admin)/update');
                                     }}
                                 >
-                                    <Ionicons name="create-outline" size={20} color="#10b981" />
+                                    <Ionicons name="create-outline" size={24} color="#10b981" />
                                     <Text style={styles.modalMenuText}>Edit Product</Text>
                                 </TouchableOpacity>
 
@@ -325,10 +324,10 @@ const ProductsPage = () => {
                                     style={styles.modalMenuItem}
                                     onPress={() => {
                                         setMenuVisible(false);
-                                        alert("Delete functionality coming soon!");
+                                        showToast('error',"Delete functionality coming soon!");
                                     }}
                                 >
-                                    <Ionicons name="trash-outline" size={20} color="#ef4444" />
+                                    <Ionicons name="trash-outline" size={24} color="#ef4444" />
                                     <Text style={styles.modalMenuText}>Delete Product</Text>
                                 </TouchableOpacity>
                             </View>
@@ -336,180 +335,9 @@ const ProductsPage = () => {
                     </BlurView>
                 </View>
             </Modal>
-
+<ToastMessage/>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    header: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingHorizontal: 16,
-        paddingTop: 50,
-        paddingBottom: 15,
-    },
-    headerTitle: {
-        fontSize: 26,
-        fontWeight: "800",
-    },
-    headerIcon: {
-        padding: 8,
-    },
-    searchContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        borderRadius: 16,
-        marginHorizontal: 16,
-        marginBottom: 16,
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-    },
-    searchIcon: {
-        marginRight: 10,
-    },
-    searchInput: {
-        flex: 1,
-        fontSize: 16,
-    },
-    listContainer: {
-        paddingBottom: 80,
-    },
-    card: {
-        marginHorizontal: 16,
-        marginBottom: 12,
-        borderRadius: 16,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 8,
-        elevation: 6,
-    },
-    cardContent: {
-        flexDirection: "row",
-        alignItems: "center",
-        padding: 15,
-    },
-    productImage: {
-        width: 80,
-        height: 80,
-        borderRadius: 15,
-        marginRight: 15,
-    },
-    productDetails: {
-        flex: 1,
-    },
-    productName: {
-        fontSize: 16,
-        fontWeight: "700",
-    },
-    priceRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 8,
-    },
-    priceText: {
-        fontSize: 13,
-        fontWeight: "600",
-    },
-    skuText: {
-        fontSize: 12,
-    },
-    statusBadge: {
-        alignSelf: "flex-start",
-        paddingHorizontal: 10,
-        paddingVertical: 4,
-        borderRadius: 8,
-    },
-    inStockBadge: {
-        backgroundColor: "rgba(16, 185, 129, 0.15)",
-    },
-    outOfStockBadge: {
-        backgroundColor: "rgba(239, 68, 68, 0.15)",
-    },
-    statusText: {
-        fontSize: 11,
-        fontWeight: "700",
-    },
-    inStockText: {
-        color: "#10B981",
-    },
-    outOfStockText: {
-        color: "#EF4444",
-    },
-    emptyContainer: {
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 100,
-    },
-    emptyText: {
-        fontSize: 18,
-    },
-    fab: {
-        position: 'absolute',
-        bottom: 20,
-        right: 20,
-        width: 60,
-        height: 60,
-        borderRadius: 30,
-        backgroundColor: '#3b82f6',
-        justifyContent: 'center',
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.25,
-        shadowRadius: 5,
-        elevation: 6,
-    },
-    modalOverlay: {
-        flex: 1,
-        justifyContent: 'flex-end',
-    },
-    blurOverlay: {
-        position: 'absolute',
-        top: 500,
-        left: 0,
-        right: 0,
-        bottom: 0,
-    },
-    modalContent: {
-        backgroundColor: 'rgba(255,255,255,0.9)',
-        borderTopLeftRadius: 25,
-        borderTopRightRadius: 25,
-        padding: 20,
-        paddingBottom: 30,
-    },
-    closeButton: {
-        alignSelf: 'flex-end',
-        marginBottom: 10,
-    },
-    modalMenu: {
-        backgroundColor: 'white',
-        borderRadius: 16,
-        overflow: 'hidden',
-    },
-    modalMenuItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingVertical: 15,
-        paddingHorizontal: 20,
-    },
-    modalMenuText: {
-        marginLeft: 12,
-        fontSize: 16,
-        color: '#374151',
-    },
-    modalDivider: {
-        height: 1,
-        backgroundColor: '#f3f4f6',
-    },
-    menuTouchable: {
-        padding: 8,
-    },
-});
 
 export default ProductsPage;
