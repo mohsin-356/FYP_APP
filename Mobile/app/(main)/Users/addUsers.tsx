@@ -179,10 +179,10 @@ const AddUser = () => {
                                 style={styles.picker}
 
                             >
-                                <Picker.Item  label="Select Role" value="" />
-                               
+                                <Picker.Item label="Select Role" value="" />
+
                                 {roles.map((r) => (
-                                    <Picker.Item  key={r} label={r} value={r} />
+                                    <Picker.Item key={r} label={r} value={r} />
                                 ))}
                             </Picker>
                         </View>

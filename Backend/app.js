@@ -38,8 +38,6 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Specify allowed methods.
     allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers.
   }));
-
-app.use("/api/v1/movies", moviesRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 
