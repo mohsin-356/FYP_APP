@@ -13,6 +13,11 @@ import * as ImagePicker from 'expo-image-picker';
 import ToastMessage, { showToast } from '@/components/ToastMessage'; // Import Toast
 import styles from '@/Styles/User/addUser';
 
+import axios from 'axios'; // 🆕 Axios imported directly
+const API_BASE_URL = 'http://10.13.23.2:3000/api/v1/user'; // 🆕 Your backend API URL
+
+
+
 const AddUser = () => {
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
@@ -44,7 +49,7 @@ const AddUser = () => {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit =async () => {
         if (!userName || !email || !phone || !password || !role || !cnic) {
             showToast('error', 'Error: Please fill in all fields!');
             return;
@@ -61,23 +66,43 @@ const AddUser = () => {
             image,
         });
 
-        // Reset fields
-        setUserName('');
-        setEmail('');
-        setPhone('');
-        setPassword('');
-        setRole('');
-        setCnic('');
-        setAddress({
-            street: '',
-            city: '',
-            state: '',
-            province: '',
-            postalCode: '',
-        });
-        setImage(null);
+        const userData = {
+            userName,
+            email,
+            phone,
+            password,
+            role,
+            cnic,
+            address,
+            image,
+        };
 
-        showToast('success', 'User Added Successfully!');
+        try {
+            const response = await axios.post(`${API_BASE_URL}/addUser`, userData, {
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            showToast('success', response.data.message);
+
+            // Reset fields
+            setUserName('');
+            setEmail('');
+            setPhone('');
+            setPassword('');
+            setRole('');
+            setCnic('');
+            setAddress({
+                street: '',
+                city: '',
+                state: '',
+                province: '',
+                postalCode: '',
+            });
+            setImage(null);
+        } catch (error) {
+           showToast('error', 'Error: Failed to add user!');
+            console.error(error);
+        }
     };
 
     return (
