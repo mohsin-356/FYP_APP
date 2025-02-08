@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import { useRouter } from "expo-router";
-import { LinearGradient } from 'expo-linear-gradient';
-
+import styles from '@/Styles/Profile/detailprofile';
 const ProfileDetailScreen = () => {
     const router = useRouter();
 
@@ -80,111 +79,6 @@ const ProfileDetailScreen = () => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-  
-    scrollViewContent: {
-        flexGrow: 1,
-        justifyContent: 'center',
-        padding: 3,
-    },
-    card: {
-        backgroundColor: 'rgba(255,255,255,0.9)',
-        borderRadius: 20,
-        padding: 18,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.2,
-        shadowRadius: 20,
-        elevation: 15,
-       
-    },
-    profileInfo: {
-        alignItems: 'center',
-        marginBottom: 24,
-    },
-    avatarContainer: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
-        elevation: 8,
-    },
-    avatar: {
-        width: 180,
-        height: 180,
-        borderRadius: 90,
-        borderWidth: 5,
-        borderColor: 'white',
-    },
-    name: {
-        marginTop: 16,
-        fontSize: 28,
-        fontWeight: 'bold',
-        color: '#2D3748',
-    },
-    email: {
-        color: '#718096',
-        fontSize: 16,
-    },
-    detailSection: {
-        paddingVertical: 12,
-        borderBottomWidth: 1,
-        borderBottomColor: '#E2E8F0',
-    },
-    detailContent: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 16,
-    },
-    detailIcon: {
-        fontSize: 24,
-    },
-    detailLabel: {
-        fontSize: 16,
-        fontWeight: '600',
-        color: '#4A5568',
-    },
-    detailValue: {
-        fontSize: 16,
-        color: '#1A202C',
-    },
-    actionButtons: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 24,
-    },
-    button: {
-        width: '48%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: 14,
-        borderRadius: 12,
-        ...Platform.select({
-            ios: {
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.2,
-                shadowRadius: 5,
-            },
-            android: {
-                elevation: 5,
-            },
-        }),
-    },
-    closeButton: {
-        backgroundColor: '#E2E8F0',
-    },
-    editButton: {
-        backgroundColor: '#4A90E2',
-    },
-    buttonText: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-});
+
 
 export default ProfileDetailScreen;

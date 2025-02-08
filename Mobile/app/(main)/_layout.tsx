@@ -94,6 +94,17 @@ export default function Layout() {
               drawerIcon: ({ color, size }) => <MaterialIcons name="people" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
             }}
           />
+
+          <Drawer.Screen
+            name="Profile"
+            options={{
+              drawerLabel: 'Profile',
+              headerTitle: 'Users Panel',
+              headerStyle: dynamicStyles.headerStyle,
+              headerTintColor: dynamicStyles.headerTintColor,
+              drawerIcon: ({ color, size }) => <MaterialIcons name="person-outline" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
+            }}
+          />
           {/* Products Screen */}
           <Drawer.Screen
             name="Products"
@@ -131,17 +142,6 @@ export default function Layout() {
         /> 
       
      
-       <Drawer.Screen
-          name="Profile"
-          options={{
-            drawerItemStyle: { display: 'none' },
-            drawerLabel: 'Profile',
-            headerTitle: 'Users Panel',
-            headerStyle: dynamicStyles.headerStyle,
-            headerTintColor: dynamicStyles.headerTintColor,
-            drawerIcon: ({ color, size }) => <MaterialIcons name="person-outline" size={size} color={isDarkMode ? '#F3F4F6' : '#1F2937'} />,
-          }}
-        />
      
       
         <Drawer.Screen
