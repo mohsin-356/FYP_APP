@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const cors = require('cors');
 const connectToDatabase=require('./database/db');
-const Routes = require('./routes/user.routes');
+const userRoutes = require('./routes/user.routes');
 
 const cookieParser = require('cookie-parser');
 connectToDatabase();
