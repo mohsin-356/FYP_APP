@@ -6,15 +6,13 @@ import {
     TouchableOpacity,
     ScrollView,
     Image,
+    Alert
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import ToastMessage, { showToast } from '@/components/ToastMessage'; // Import Toast
 import styles from '@/Styles/User/addUser';
-
-import { Alert } from 'react-native';
-
 
 import axios from 'axios'; // 🆕 Axios imported directly
 const API_BASE_URL = 'http://10.13.23.2:3000/api/v1/user'; // 🆕 Your backend API URL
@@ -39,33 +37,33 @@ const AddUser = () => {
 
     const roles = ['Admin', 'Manager', 'Supplier', 'Worker'];
 
-    const handleImagePick = async (): Promise<void> => {
-        // Request permission
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        
-        if (status !== 'granted') {
-            Alert.alert('Permission Required', 'Please grant media library access.');
-            return;
-        }
+ const handleImagePick = async (): Promise<void> => {
+    // Request permission
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
-        // Open Image Picker
-        const result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-    
-        console.log("Image Picker Result:", result); // Debugging ke liye log karein
-    
-        // ✅ Ensure assets array is present
-        if (!result.canceled && result.assets && result.assets.length > 0) {
-            console.log("Selected Image URI:", result.assets[0].uri);
-            setImage(result.assets[0].uri);
-        } else {
-            console.log("No image selected.");
-        }
-    };
+    if (status !== 'granted') {
+        Alert.alert('Permission Required', 'Please grant media library access.');
+        return;
+    }
+
+    // Open Image Picker
+    const result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+    });
+
+    console.log("Image Picker Result:", result); // Debugging ke liye log karein
+
+    // ✅ Ensure assets array is present
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+        console.log("Selected Image URI:", result.assets[0].uri);
+        setImage(result.assets[0].uri);
+    } else {
+        console.log("No image selected.");
+    }
+};
 
     const handleSubmit =async () => {
         if (!userName || !email || !phone || !password || !role || !cnic) {
