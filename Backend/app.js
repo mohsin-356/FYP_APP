@@ -10,7 +10,7 @@ const globalErrorHandler = require('./Controllers/errorController');
 // const moviesRouter = require('./Routes/moviesRoutes');
 // const authRouter = require('./Routes/authRoutes');
 const userRouter = require('./Routes/userRoutes');
-// const cors = require('cors');
+const cors = require('cors');
 const bodyParser = require('body-parser');  // Importing body-parser
 
 
@@ -30,11 +30,11 @@ app.use(bodyParser.urlencoded({ extended: true })); // To handle form data parsi
 // app.use(sanitize());  // Prevent NoSQL injections
 // app.use(xss());  // Prevent XSS attacks
 
-// app.use(cors({
-//     origin: '*', // Replace '*' with your allowed domain(s) in production.
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Specify allowed methods.
-//     allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers.
-//   }));
+app.use(cors({
+    origin: '*', // Replace '*' with your allowed domain(s) in production.
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Specify allowed methods.
+    allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers.
+  }));
 // app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 
