@@ -20,10 +20,12 @@ connectToDatabase();
 // Middleware setup
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json({ limit: '10MB' }));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '10000MB' }));
+app.use(bodyParser.urlencoded({limit:'10000MB', extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/users', userRoutes);

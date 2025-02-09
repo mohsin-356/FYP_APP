@@ -15,7 +15,7 @@ import ToastMessage, { showToast } from '@/components/ToastMessage'; // Import T
 import styles from '@/Styles/User/addUser';
 
 import axios from 'axios'; // 🆕 Axios imported directly
-const API_BASE_URL = 'http://10.13.23.2:3000/api/v1/user'; // 🆕 Your backend API URL
+const API_BASE_URL = 'http://10.13.23.2:3000'; // 🆕 Your backend API URL
 
 
 
@@ -65,6 +65,7 @@ const AddUser = () => {
     }
 };
 
+
     const handleSubmit =async () => {
         if (!userName || !email || !phone || !password || !role || !cnic) {
             showToast('error', 'Error: Please fill in all fields!');
@@ -94,7 +95,7 @@ const AddUser = () => {
         };
 
         try {
-            const response = await axios.post(`${API_BASE_URL}/addUser`, userData, {
+            const response = await axios.post(`${API_BASE_URL}/users/register`, userData, {
                 headers: { 'Content-Type': 'application/json' },
             });
 
