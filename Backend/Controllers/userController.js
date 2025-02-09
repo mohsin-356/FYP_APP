@@ -11,6 +11,7 @@ const util = require("util");
 exports.addUser = async (req, res) => {
   const { userName, email, phone, password, role, cnic, address, image } =
     req.body;
+    const imagePath = "/images/upload/" + req.file.filename;
     try {
       const user = await User.create({
         userName,
@@ -20,7 +21,7 @@ exports.addUser = async (req, res) => {
         role,
         cnic,
         address,
-        image,
+        image:imagePath
       });
       res.status(201).json({
         status: "success",

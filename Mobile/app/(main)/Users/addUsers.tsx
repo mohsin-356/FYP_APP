@@ -13,6 +13,8 @@ import * as ImagePicker from 'expo-image-picker';
 import ToastMessage, { showToast } from '@/components/ToastMessage'; // Import Toast
 import styles from '@/Styles/User/addUser';
 
+import { Alert } from 'react-native';
+
 import axios from 'axios'; // 🆕 Axios imported directly
 const API_BASE_URL = 'http://10.13.23.2:3000/api/v1/user'; // 🆕 Your backend API URL
 
@@ -32,20 +34,35 @@ const AddUser = () => {
         province: '',
         postalCode: '',
     });
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState<string | null>(null);
 
     const roles = ['Admin', 'Manager', 'Supplier', 'Worker'];
 
-    const handleImagePick = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
+    const handleImagePick = async (): Promise<void> => {
+        // Request permission
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        
+        if (status !== 'granted') {
+            Alert.alert('Permission Required', 'Please grant media library access.');
+            return;
+        }
+    
+        // Open Image Picker
+        const result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
-
-        if (!result.canceled) {
-            // setImage(result.assets[0].uri);
+    
+        console.log("Image Picker Result:", result); // Debugging ke liye log karein
+    
+        // ✅ Ensure assets array is present
+        if (!result.canceled && result.assets && result.assets.length > 0) {
+            console.log("Selected Image URI:", result.assets[0].uri);
+            setImage(result.assets[0].uri);
+        } else {
+            console.log("No image selected.");
         }
     };
 
