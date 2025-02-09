@@ -1,25 +1,31 @@
 const express = require('express');
-const app = express();
 const dotenv = require('dotenv');
-dotenv.config();
 const cors = require('cors');
-const connectToDatabase=require('./database/db');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const path = require('path');
+
+const connectToDatabase = require('./database/db');
 const userRoutes = require('./routes/user.routes');
 
-const cookieParser = require('cookie-parser');
-const cors = require("cors");
-const bodyParser = require("body-parser");
+// Load environment variables
+dotenv.config();
+
+// Initialize Express app
+const app = express();
+
+// Connect to the database
 connectToDatabase();
 
+// Middleware setup
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json({ limit: "10000MB" }));
+app.use(bodyParser.json({ limit: '10MB' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use(express.static(Path.join(__dirname, "public")));
-
+// Routes
 app.use('/users', userRoutes);
 
 module.exports = app;
