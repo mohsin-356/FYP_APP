@@ -14,10 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// app.use('/users', userRoutes);
-// app.use('/captains', captainRoutes);
+app.use('/users', userRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
-})
 module.exports = app;
