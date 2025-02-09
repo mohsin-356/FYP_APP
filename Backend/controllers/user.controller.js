@@ -76,6 +76,9 @@ const userService = require("../services/user.service");
 const { validationResult } = require("express-validator");
 
 module.exports.registerUser = async (req, res) => {
+  console.log("\n");
+  console.log(req.body);
+  console.log("\n");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
