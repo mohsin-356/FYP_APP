@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const Path = require("path");
 // const rateLimit = require("express-rate-limit");
 // const xss = require("xss-clean");
 // const sanitize = require("express-mongo-sanitize");
@@ -14,18 +15,12 @@ const cors = require('cors');
 const bodyParser = require('body-parser');  // Importing body-parser
 
 
-// let limiter = rateLimit({
-//     max: 100,
-//     windowMs: 15 * 60 * 1000, 
-//     message: "Too many requests from this IP, please try again after 15 minutes",
-// });
-
-// app.use('/api', limiter);
 
 app.use(morgan('dev')); // Logging HTTP requests
 // Body-parser added to handle URL encoded and JSON body parsing
 app.use(bodyParser.json({limit: '10000MB'})); // Limit JSON size to 10MB
 app.use(bodyParser.urlencoded({ extended: true })); // To handle form data parsing
+app.use(express.static(Path.join(__dirname, "public")));
 
 // app.use(sanitize());  // Prevent NoSQL injections
 // app.use(xss());  // Prevent XSS attacks
