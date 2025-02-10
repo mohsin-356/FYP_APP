@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
     View,
     Text,
@@ -6,215 +6,202 @@ import {
     TouchableOpacity,
     ScrollView,
     Image,
-} from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { Ionicons } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import styles from '@/Styles/User/updateUsers';
-import ToastMessage,{showToast} from '@/components/ToastMessage';
+    Alert,
+} from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
+import ToastMessage, { showToast } from "@/components/ToastMessage";
+import { useRouter, useLocalSearchParams } from "expo-router";
+import axios from "axios";
+import styles from "@/Styles/User/updateUsers";
+
+const API_BASE_URL = "http://10.13.23.2:3000/api/v1/user";
+
 const UpdateUser = () => {
-    // const existingUser = {
-    //     full_name: 'Mohisn Hassan',
-    //     email: 'Mohsin@example.com',
-    //     phone: '1234567890',
-    //     role: 'Admin',
-    //     cnic: '12345-6789012-3',
-    //     address: {
-    //         street: '123 Main St',
-    //         city: 'Springfield',
-    //         state: 'Illinois',
-    //         province: 'Central',
-    //         postal_code: '62704',
-    //     },
-    //     picture: 'https://via.placeholder.com/100',
-    // };
+    const router = useRouter();
+    const { id } = useLocalSearchParams(); // User ID mil raha hai
 
-    const [userName, setUserName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
-    const [cnic, setCnic] = useState('');
+    const [userName, setUserName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [password, setPassword] = useState("");
+    const [role, setRole] = useState("");
+    const [cnic, setCnic] = useState("");
     const [address, setAddress] = useState({
-        street:  '',
-        city: '',
-        state: '',
-        province:'',
-        postalCode: '',
+        street: "",
+        city: "",
+        state: "",
+        province: "",
+        postalCode: "",
     });
-    const [image, setImage] = useState(null);
-    const roles = ['Admin', 'Manager', 'Supplier', 'Worker'];
+    const [image, setImage] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+    
+    const roles = ["Admin", "Manager", "Supplier", "Worker"];
 
-    // useEffect(() => {
-    //     // Populate fields with existing user data
-    //     if (existingUser) {
-    //         setUserName(existingUser.full_name || '');
-    //         setEmail(existingUser.email || '');
-    //         setPhone(existingUser.phone || '');
-    //         setRole(existingUser.role || '');
-    //         setCnic(existingUser.cnic || '');
-    //         setAddress({
-    //             street: existingUser.address?.street || '',
-    //             city: existingUser.address?.city || '',
-    //             state: existingUser.address?.state || '',
-    //             province: existingUser.address?.province || '',
-    //             postalCode: existingUser.address?.postal_code || '',
-    //         });
-    //         setImage(existingUser.picture || null);
-    //     }
-    // }, [existingUser]);
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get(`${API_BASE_URL}/getUser/${id}`);
+                const user = response.data;
+                setUserName(user.userName);
+                setEmail(user.email);
+                setPhone(user.phone);
+                setRole(user.role);
+                setCnic(user.cnic);
+                setAddress(user.address || {});
+                setImage(user.image || null);
+            } catch (error) {
+                console.error("Error fetching user:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const handleImagePick = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
+        if (id) {
+            fetchUser();
+        }
+    }, [id]);
+
+    const handleImagePick = async (): Promise<void> => {
+        // Permission check
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (status !== "granted") {
+            Alert.alert("Permission Required", "Please grant media library access.");
+            return;
+        }
+
+        // Open Image Picker
+        const result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
 
-        if (!result.canceled) {
-            // setImage(result.assets[0].uri);
+        console.log("Image Picker Result:", result);
+
+        // ✅ Ensure assets array is present
+        if (!result.canceled && result.assets && result.assets.length > 0) {
+            console.log("Selected Image URI:", result.assets[0].uri);
+            setImage(result.assets[0].uri);
+        } else {
+            console.log("No image selected.");
         }
     };
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
         if (!userName || !email || !phone || !role || !cnic) {
-            showToast('error', 'Please fill in all fields.');
+            showToast("error", "Please fill in all fields.");
             return;
         }
 
-        console.log('Updated User Data:', {
+        const userData = {
             userName,
             email,
             phone,
-            password, // Only if updated
+            password,
             role,
             cnic,
             address,
             image,
-        });
+        };
 
-        showToast('success', 'The user information has been successfully updated.');
+        try {
+            const response = await axios.put(`${API_BASE_URL}/updateUser/${id}`, userData, {
+                headers: { "Content-Type": "application/json" },
+            });
+
+            showToast("success", response.data.message);
+            router.push("/Users"); // Navigate back to users list
+        } catch (error) {
+            showToast("error", "Failed to update user.");
+            console.error("Update error:", error);
+        }
     };
+
+    if (loading) {
+        return <Text>Loading...</Text>;
+    }
 
     return (
         <>
-        <ScrollView style={styles.container}>
-            <View style={styles.inputGroup}>
-                {/* Image Picker */}
-                <View style={styles.imagePickerContainer}>
-                    <TouchableOpacity onPress={handleImagePick} style={styles.imagePickerButton}>
-                        {image ? (
-                            <Image source={{ uri: image }} style={styles.imagePreview} />
-                        ) : (
-                            <Ionicons name="camera" size={36} color="#fff" />
-                        )}
-                    </TouchableOpacity>
-                </View>
+            <ScrollView style={styles.container}>
+                <View style={styles.inputGroup}>
+                    {/* Image Picker */}
+                    <View style={styles.imagePickerContainer}>
+                        <TouchableOpacity onPress={handleImagePick} style={styles.imagePickerButton}>
+                            {image ? <Image source={{ uri: image }} style={styles.imagePreview} /> : <Ionicons name="camera" size={36} color="#fff" />}
+                        </TouchableOpacity>
+                    </View>
 
-                {/* Username Input */}
-                <View style={styles.inputWrapper}>
-                    <Ionicons name="person" size={24} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Full Name"
-                        value={userName}
-                        onChangeText={setUserName}
-                    />
-                </View>
+                    {/* Username Input */}
+                    <View style={styles.inputWrapper}>
+                        <Ionicons name="person" size={24} />
+                        <TextInput style={styles.input} placeholder="Full Name" value={userName} onChangeText={setUserName} />
+                    </View>
 
-                {/* Email Input */}
-                <View style={styles.inputWrapper}>
-                    <Ionicons name="mail" size={24} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Email"
-                        keyboardType="email-address"
-                        value={email}
-                        onChangeText={setEmail}
-                    />
-                </View>
+                    {/* Email Input */}
+                    <View style={styles.inputWrapper}>
+                        <Ionicons name="mail" size={24} />
+                        <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" value={email} onChangeText={setEmail} />
+                    </View>
 
-                {/* Phone Input */}
-                <View style={styles.inputWrapper}>
-                    <Ionicons name="call" size={24} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Phone"
-                        keyboardType="phone-pad"
-                        value={phone}
-                        onChangeText={setPhone}
-                    />
-                </View>
+                    {/* Phone Input */}
+                    <View style={styles.inputWrapper}>
+                        <Ionicons name="call" size={24} />
+                        <TextInput style={styles.input} placeholder="Phone" keyboardType="phone-pad" value={phone} onChangeText={setPhone} />
+                    </View>
 
-                {/* Password Input */}
-                <View style={styles.inputWrapper}>
-                    <Ionicons name="lock-closed" size={24} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="New Password (optional)"
-                        secureTextEntry
-                        value={password}
-                        onChangeText={setPassword}
-                    />
-                </View>
+                    {/* Password Input */}
+                    <View style={styles.inputWrapper}>
+                        <Ionicons name="lock-closed" size={24} />
+                        <TextInput style={styles.input} placeholder="Password" secureTextEntry value={password} onChangeText={setPassword} />
+                    </View>
 
-                {/* CNIC Input */}
-                <View style={styles.inputWrapper}>
-                    <Ionicons name="card" size={24} />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="CNIC"
-                        keyboardType="number-pad"
-                        value={cnic}
-                        onChangeText={setCnic}
-                    />
-                </View>
+                    {/* CNIC Input */}
+                    <View style={styles.inputWrapper}>
+                        <Ionicons name="card" size={24} />
+                        <TextInput style={styles.input} placeholder="CNIC" keyboardType="number-pad" value={cnic} onChangeText={setCnic} />
+                    </View>
 
-                {/* Address Inputs */}
-             
-               
+                    {/* Address Inputs */}
                     <Text style={styles.sectionTitle}>Address</Text>
-                    {['street', 'city', 'state', 'province', 'postalCode'].map((field) => (
+                    {["street", "city", "state", "province", "postalCode"].map((field) => (
                         <View style={styles.inputWrapper} key={field}>
                             <Ionicons name="location" size={24} />
                             <TextInput
                                 style={styles.input}
                                 placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                                onChangeText={(value) =>
-                                    setAddress((prev) => ({ ...prev, [field]: value }))
-                                }
+                                onChangeText={(value) => setAddress((prev) => ({ ...prev, [field]: value }))}
                             />
                         </View>
                     ))}
 
-                {/* Role Picker */}
-                <View style={styles.inputWrapper}>
-                    <Ionicons name="briefcase" size={24} />
-                    <View style={styles.pickerWrapper}>
-                        <Picker
-                            selectedValue={role}
-                            onValueChange={(itemValue) => setRole(itemValue)}
-                            style={styles.picker}
-                        >
-                            <Picker.Item label="Select Role" value="" />
-                            {roles.map((r) => (
-                                <Picker.Item key={r} label={r} value={r} />
-                            ))}
-                        </Picker>
+                    {/* Role Picker */}
+                    <View style={styles.inputWrapper}>
+                        <Ionicons name="briefcase" size={24} />
+                        <View style={styles.pickerWrapper}>
+                            <Picker selectedValue={role} onValueChange={(itemValue) => setRole(itemValue)} style={styles.picker}>
+                                <Picker.Item label="Select Role" value="" />
+                                {roles.map((r) => (
+                                    <Picker.Item key={r} label={r} value={r} />
+                                ))}
+                            </Picker>
+                        </View>
                     </View>
-                </View>
 
-                {/* Submit Button */}
-                <TouchableOpacity style={styles.submitButton} onPress={handleUpdate}>
-                    <Text style={styles.submitButtonText}>Update User</Text>
-                </TouchableOpacity>
-            </View>
-        </ScrollView>
-        <ToastMessage/>
+                    {/* Submit Button */}
+                    <TouchableOpacity style={styles.submitButton} onPress={handleUpdate}>
+                        <Text style={styles.submitButtonText}>Update User</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
+            <ToastMessage />
         </>
     );
 };
-
 
 export default UpdateUser;

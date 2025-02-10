@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios'; 
 import {
     View,
     Text,
@@ -12,71 +13,64 @@ import {
 import { Search, Filter, ChevronRight, Plus } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import styles from '@/Styles/User/user';
+const API_BASE_URL = 'http://10.13.23.2:3000/api/v1/user'; 
 const UserIndexPage = () => {
     interface User {
-        id: string;
-        name: string;
+        _id: string;
+        userName: string;
         email: string;
         role: string;
         status: string;
         image: string;
     }
-    const [users, setUsers] = useState<User[]>([
-        {
-            id: '1',
-            name: 'Mohsin',
-            email: 'mohsin@example.com',
-            role: 'Admin',
-            status: 'Active',
-            image: 'https://via.placeholder.com/50', // Replace with actual image URL
-        },
-        {
-            id: '2',
-            name: 'Rebal',
-            email: 'rebal@example.com',
-            role: 'User',
-            status: 'Inactive',
-            image: 'https://via.placeholder.com/50', // Replace with actual image URL
-        },
-        // Add more users here...
-    ]);
-
+    
+    const [users, setUsers] = useState<User[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const router=useRouter();
+    
+    // ✅ Fetch Users from API
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get(`${API_BASE_URL}/getUsers`);
 
+                setUsers(response.data); // ✅ Update State with API Data
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        };
+        
+        fetchUsers();
+    }, []); // ✅ Runs once when component mounts
     const filteredUsers = users.filter((user) =>
-        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-const router=useRouter();
-    const renderUserItem = ({ item }: { item: User }) => (
-        <View
-            style={styles.userItem}
-           
-        >
-            <Image source={{ uri: item.image }} style={styles.userImage} />
+        user.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase())
+
+);
+const renderUserItem = ({ item }: { item: User }) => (
+    <View style={styles.userItem}>
+            <Image source={{ uri: item.image || "https://via.placeholder.com/50" }} style={styles.userImage} />
             <View style={styles.userInfo}>
-                <Text style={styles.userName}>{item.name}</Text>
+                <Text style={styles.userName}>{item.userName}</Text>
                 <Text style={styles.userEmail}>{item.email}</Text>
                 <View style={styles.userTags}>
                     <Text style={[styles.tag, item.role === 'Admin' ? styles.adminTag : styles.userTag]}>
                         {item.role}
                     </Text>
-                    <Text style={[styles.tag, item.status === 'Active' ? styles.activeTag : styles.inactiveTag]}>
+                    <Text style={[styles.tag, item.status ==='active' ? styles.activeTag : styles.inactiveTag]}>
                         {item.status}
                     </Text>
                 </View>
             </View>
-            <TouchableOpacity onPress={() => router.push('./Users/UserProfile')}>
+            <TouchableOpacity onPress={() => router.push(`/Users/UserProfile?id=${item._id}`)}>
                 <View style={styles.chevron}>
                     <ChevronRight color="black" size={30} />
                 </View>
-                
             </TouchableOpacity>
-           
         </View>
     );
 
-    return (
+       return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.searchBar}>
@@ -96,7 +90,7 @@ const router=useRouter();
             <FlatList
                 data={filteredUsers}
                 renderItem={renderUserItem}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item._id}
                 contentContainerStyle={styles.listContent}
                 ListEmptyComponent={() => (
                     <View style={styles.emptyList}>

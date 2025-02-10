@@ -23,5 +23,11 @@ const storage = multer.diskStorage({
   });
 const upload = multer({ storage: storage });
 router.route("/addUser").post( upload.single('image'),userController.addUser);
+router.route("/getUsers").get(userController.getUsers);
+//create a route to get a user data for a specific user using id as a parameter
+
+router.route("/getUser/:id").get(userController.getUser);
+router.route("/deleteUser/:id").delete(userController.deleteUser);
+router.route("/updateUser/:id").put(upload.single("image"), userController.updateUser);
             
 module.exports = router;
