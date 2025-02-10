@@ -71,7 +71,7 @@
 //   res.clearCookie("token");
 //   return res.status(200).json({ message: "Logged out" });
 // };
-// const userModel = require("../models/user.model");
+const userModel = require("../models/user.model");
 const userService = require("../services/user.service");
 const { validationResult } = require("express-validator");
 const cloudinary= require('cloudinary');
