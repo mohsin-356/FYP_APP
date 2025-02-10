@@ -1,26 +1,3 @@
-// const express = require("express");
-// const router = express.Router();
-// const { check } = require("express-validator");
-// //require the user controller
-// const userController = require("../controllers/user.controller");
-// const { route } = require("../app");
-// const authMiddleware = require("../middlewares/auth.middleware");
-// router.post(
-//   "/register",
-//   [
-//     check("email").isEmail().withMessage("Please enter a valid email address"),
-//     check("password")
-//       .isLength({ min: 6 })
-//       .withMessage("Password must be at least 6 characters long"),
-//     check("fullname.firstname")
-//       .isLength({ min: 3 })
-//       .withMessage("First name must be at least 3 characters long"),
-//   ],
-//   userController.registerUser
-// );
-// module.exports = router;
-
-
 const express = require("express");
 const router = express.Router();
 const { check } = require("express-validator");
@@ -38,7 +15,7 @@ router.post(
     ],
     userController.registerUser
 );
-
+router.put('update-picture',upload.singleUpload,userController.updateProfilePicController);
 module.exports = router;
 
 

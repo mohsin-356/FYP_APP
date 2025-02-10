@@ -4,7 +4,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const path = require('path');
-
+const cloudinary = require('cloudinary');
 const connectToDatabase = require('./database/db');
 const userRoutes = require('./routes/user.routes');
 
@@ -16,6 +16,17 @@ const app = express();
 
 // Connect to the database
 connectToDatabase();
+
+//config the cloudinary
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    // secure: true,
+    // redirect_secure: true,
+    // use_path_url: true,
+    // url: 'https://res.cloudinary.com/smarttech/image/upload'
+ });
 
 // Middleware setup
 app.use(cors());
