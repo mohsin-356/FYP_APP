@@ -20,8 +20,9 @@ connectToDatabase();
 // Middleware setup
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json({ limit: '10000MB' }));
-app.use(bodyParser.urlencoded({limit:'10000MB', extended: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '5000MB' }));
+app.use(bodyParser.urlencoded({limit:'5000MB', extended: true }));
 app.use(cookieParser());
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
 

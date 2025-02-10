@@ -76,9 +76,15 @@ const userService = require("../services/user.service");
 const { validationResult } = require("express-validator");
 
 module.exports.registerUser = async (req, res) => {
-  console.log("\n");
-  console.log(req.body);
-  console.log("\n");
+  console.log("\n===== Incoming Request =====\n");
+  console.log("Headers:", req.headers); // ✅ Debug Headers
+  console.log("Request Body:", req.body); // ✅ Debug Body
+  console.log("Uploaded File:", req.file); // ✅ Debug File
+  console.log("\n===========================\n");
+
+  if (!req.file) {
+      return res.status(400).json({ message: "Image upload failed!" });
+  }
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -86,13 +92,14 @@ module.exports.registerUser = async (req, res) => {
 
     try {
         const { userName, email, phone, password, role, cnic, address } = req.body;
+        console.log(userName, email, phone, password, role, cnic, address);
 
         // ✅ Multer saves image in public/images, store only filename
         const image = req.file ? `/images/${req.file.filename}` : null;
-
+console.log("multered image"+image);
         // ✅ Hash password before saving
         const hashedPassword = await userModel.hashPassword(password);
-
+        console.log("hashed password"+hashedPassword);
         // ✅ Check if user already exists
         const isUserExist = await userModel.findOne({ email });
         if (isUserExist) {

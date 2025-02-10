@@ -37,35 +37,92 @@ const AddUser = () => {
 
     const roles = ['Admin', 'Manager', 'Supplier', 'Worker'];
 
- const handleImagePick = async (): Promise<void> => {
-    // Request permission
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const handleImagePick = async (): Promise<void> => {
+        // Request permission
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (status !== 'granted') {
+            Alert.alert('Permission Required', 'Please grant media library access.');
+            return;
+        }
+
+        // Open Image Picker
+        const result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        console.log("Image Picker Result:", result); // Debugging ke liye log karein
+
+        // ✅ Ensure assets array is present
+        if (!result.canceled && result.assets && result.assets.length > 0) {
+            console.log("Selected Image URI:", result.assets[0].uri);
+            setImage(result.assets[0].uri);
+        } else {
+            console.log("No image selected.");
+        }
+    };
+
+    // const handleSubmit = async () => {
+    //     if (!userName || !email || !phone || !password || !role || !cnic) {
+    //         showToast('error', 'Error: Please fill in all fields!');
+    //         return;
+    //     }
     
-    if (status !== 'granted') {
-        Alert.alert('Permission Required', 'Please grant media library access.');
-        return;
-    }
-
-    // Open Image Picker
-    const result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-    });
-
-    console.log("Image Picker Result:", result); // Debugging ke liye log karein
-
-    // ✅ Ensure assets array is present
-    if (!result.canceled && result.assets && result.assets.length > 0) {
-        console.log("Selected Image URI:", result.assets[0].uri);
-        setImage(result.assets[0].uri);
-    } else {
-        console.log("No image selected.");
-    }
-};
-
-
+    //     const formData = new FormData();
+    //     formData.append("userName", userName);
+    //     formData.append("email", email);
+    //     formData.append("phone", phone);
+    //     formData.append("password", password);
+    //     formData.append("role", role);
+    //     formData.append("cnic", cnic);
+    //     formData.append("address", JSON.stringify(address)); // ✅ Convert address to JSON string
+    
+    //     if (image) {
+    //         const filename = image.split("/").pop(); // ✅ Extract filename
+    //         console.log("Selected Image Filename:", filename); // Debugging ke liye log karein
+    //         const ext = filename?.split(".").pop();
+    //         const mimeType = `image/${ext}`;
+    
+    //         formData.append("image", {
+    //             uri: image,
+    //             name: filename,
+    //             type: mimeType,
+    //         } as any);
+    //     }
+    
+    //     try {
+    //         const response = await axios.post(`${API_BASE_URL}/users/register`, formData, {
+    //             headers: {
+    //                 "Content-Type": "multipart/form-data",
+    //             },
+    //         });
+    
+    //         showToast("success", response.data.message);
+    
+    //         // ✅ Reset Form Fields
+    //         setUserName("");
+    //         setEmail("");
+    //         setPhone("");
+    //         setPassword("");
+    //         setRole("");
+    //         setCnic("");
+    //         setAddress({
+    //             street: "",
+    //             city: "",
+    //             state: "",
+    //             province: "",
+    //             postalCode: "",
+    //         });
+    //         setImage(null);
+    //     } catch (error) {
+    //         showToast("error", "Error: Failed to add user!");
+    //         console.error(error);
+    //     }
+    // };
+    
     const handleSubmit =async () => {
         if (!userName || !email || !phone || !password || !role || !cnic) {
             showToast('error', 'Error: Please fill in all fields!');
@@ -96,7 +153,7 @@ const AddUser = () => {
 
         try {
             const response = await axios.post(`${API_BASE_URL}/users/register`, userData, {
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             showToast('success', response.data.message);
