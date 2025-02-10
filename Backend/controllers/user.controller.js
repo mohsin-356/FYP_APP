@@ -71,15 +71,14 @@
 //   res.clearCookie("token");
 //   return res.status(200).json({ message: "Logged out" });
 // };
-const userModel = require("../models/user.model");
+// const userModel = require("../models/user.model");
 const userService = require("../services/user.service");
 const { validationResult } = require("express-validator");
+const cloudinary= require('cloudinary');
 
 module.exports.registerUser = async (req, res) => {
   console.log("\n===== Incoming Request =====\n");
-  console.log("Headers:", req.headers); // ✅ Debug Headers
   console.log("Request Body:", req.body); // ✅ Debug Body
-  console.log("Uploaded File:", req.file); // ✅ Debug File
   console.log("\n===========================\n");
 
   if (!req.file) {
@@ -130,11 +129,11 @@ console.log("multered image"+image);
 };
 export const updateProfilePicController = async (req, res) => {
     try {
-      const user = await userModel.findById(req.user._id);
+    //   const user = await userModel.findById(req.user._id);
       // file get from client photo
       const file = getDataUri(req.file);
       // delete prev image
-      await cloudinary.v2.uploader.destroy(user.profilePic.public_id);
+    //   await cloudinary.v2.uploader.destroy(user.profilePic.public_id);
       // update
       const cdb = await cloudinary.v2.uploader.upload(file.content);
       user.profilePic = {
