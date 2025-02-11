@@ -64,6 +64,11 @@ const UserProfile = () => {
 
     const handleDelete = () => {
         setModalVisible(true);
+        //reload to the main index page immediately
+        setTimeout(() => {
+            router.replace("/Users/");
+        }, 3000); // 3 second delay
+        
     };
 
     const confirmDelete = async () => {

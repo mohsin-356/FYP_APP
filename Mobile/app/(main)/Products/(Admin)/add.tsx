@@ -1,4 +1,119 @@
+// import React, { useState } from 'react';
+// import {
+//     View,
+//     Text,
+//     TextInput,
+//     TouchableOpacity,
+//     ScrollView,
+//     Image,
+//     Alert,
+// } from 'react-native';
+// import { Picker } from '@react-native-picker/picker';
+// import { Ionicons } from '@expo/vector-icons';
+// import * as ImagePicker from 'expo-image-picker';
+// import axios from 'axios';
+// import ToastMessage, { showToast } from '@/components/ToastMessage'; // Import Toast
+// import createStyles from '@/Styles/Products/addProduct';
+
+// const API_BASE_URL = 'http://10.13.23.2:3000/api/v1/product'; // 🆕 Base URL Updated
+
+// const AddProducts = () => {
+//     const [productName, setProductName] = useState('');
+//     const [description, setDescription] = useState('');
+//     const [price, setPrice] = useState('');
+//     const [stock, setStock] = useState('');
+//     const [sku, setSku] = useState('');
+//     const [image, setImage] = useState<string | null>(null);
+//     const [brand, setBrand] = useState('MEFCO'); // Default value
+//     const [weight, setWeight] = useState('');
+//     const [dimensions, setDimensions] = useState({ length: '', width: '', height: '' });
+//     const [inProduction, setInProduction] = useState(false);
+//     const [category, setCategory] = useState('');
+
+//     const categories = ['Electronics', 'Clothing', 'Home', 'Books', 'Other'];
+
+//     const handleImagePick = async () => {
+//         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        
+//         if (status !== 'granted') {
+//             Alert.alert('Permission Required', 'Please grant media library access.');
+//             return;
+//         }
+
+//         const result = await ImagePicker.launchImageLibraryAsync({
+//             mediaTypes: ImagePicker.MediaTypeOptions.Images,
+//             allowsEditing: true,
+//             aspect: [4, 3],
+//             quality: 1,
+//         });
+
+//         if (!result.canceled && result.assets && result.assets.length > 0) {
+//             setImage(result.assets[0].uri);
+//         }
+//     };
+
+//     const handleSubmit = async () => {
+//         if (!productName || !description || !price || !stock || !sku || !category) {
+//             showToast('error', 'Error: Please fill in all required fields!');
+//             return;
+//         }
+
+//         console.log('Product Data:', {
+//             productName,
+//             description,
+//             price,
+//             stock,
+//             sku,
+//             image,
+//             brand,
+//             weight,
+//             dimensions,
+//             inProduction,
+//             category,
+//         });
+
+//         const productData = {
+//             productName,
+//             description,
+//             price,
+//             stock,
+//             sku,
+//             image,
+//             brand,
+//             weight,
+//             dimensions,
+//             inProduction,
+//             category,
+//         };
+
+//         try {
+//             const response = await axios.post(`${API_BASE_URL}/addProduct`, productData, {
+//                 headers: { 'Content-Type': 'application/json' },
+//             });
+
+//             showToast('success', response.data.message);
+
+//             // Reset fields
+//             setProductName('');
+//             setDescription('');
+//             setPrice('');
+//             setStock('');
+//             setSku('');
+//             setImage(null);
+//             setWeight('');
+//             setDimensions({ length: '', width: '', height: '' });
+//             setInProduction(false);
+//             setCategory('');
+//         } catch (error) {
+//             showToast('error', 'Error: Failed to add product!');
+//             console.error(error);
+//         }
+//     };
+
+//     const styles = createStyles(false); // Assume light mode by default
+// };
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
     View,
     Text,
@@ -14,7 +129,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useSettings } from "@/themes/SettingsContext"; // Ensure this path is correct
 import createStyles from '@/Styles/Products/addProduct';
 import ToastMessage,{showToast} from '@/components/ToastMessage';
-
+const API_BASE_URL = 'http://10.13.23.2:3000/api/v1/product'; 
 const AddProducts = () => {
     const { isDarkMode } = useSettings();
     const [productName, setProductName] = useState('');
@@ -22,32 +137,85 @@ const AddProducts = () => {
     const [price, setPrice] = useState('');
     const [stock, setStock] = useState('');
     const [sku, setSku] = useState('');
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState<string | null>(null);
     const [brand, setBrand] = useState('MEFCO'); // Default value
     const [weight, setWeight] = useState('');
     const [dimensions, setDimensions] = useState({ length: '', width: '', height: '' });
     const [inProduction, setInProduction] = useState(false);
     const [category, setCategory] = useState('');
 
-    const categories = ['Electronics', 'Clothing', 'Home', 'Books', 'Other'];
+    const categories = ['Thermostat', 'Element', 'Other'];
+
+    // const handleImagePick = async () => {
+    //     const result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //         allowsEditing: true,
+    //         aspect: [4, 3],
+    //         quality: 1,
+    //     });
+    //     if (!result.canceled) {
+    //         // setImage(result.assets[0].uri);
+    //     }
+    // };
 
     const handleImagePick = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        
+        if (status !== 'granted') {
+            Alert.alert('Permission Required', 'Please grant media library access.');
+            return;
+        }
+
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
         });
-        if (!result.canceled) {
-            // setImage(result.assets[0].uri);
+
+        if (!result.canceled && result.assets && result.assets.length > 0) {
+            setImage(result.assets[0].uri);
         }
     };
 
-    const handleSubmit = () => {
+    // const handleSubmit = () => {
+    //     if (!productName || !description || !price || !stock || !sku || !category) {
+    //         showToast('error', 'Please fill in all required fields.');
+    //         return;
+    //     }
+    //     console.log('Product Data:', {
+    //         productName,
+    //         description,
+    //         price,
+    //         stock,
+    //         sku,
+    //         image,
+    //         brand,
+    //         weight,
+    //         dimensions,
+    //         inProduction,
+    //         category,
+    //     });
+    //     // Reset fields
+    //     setProductName('');
+    //     setDescription('');
+    //     setPrice('');
+    //     setStock('');
+    //     setSku('');
+    //     setImage(null);
+    //     setWeight('');
+    //     setDimensions({ length: '', width: '', height: '' });
+    //     setInProduction(false);
+    //     setCategory('');
+    //     showToast('success', 'Your product has been successfully added.');
+    // };
+
+    const handleSubmit = async () => {
         if (!productName || !description || !price || !stock || !sku || !category) {
-            showToast('error', 'Please fill in all required fields.');
+            showToast('error', 'Error: Please fill in all required fields!');
             return;
         }
+
         console.log('Product Data:', {
             productName,
             description,
@@ -61,20 +229,44 @@ const AddProducts = () => {
             inProduction,
             category,
         });
-        // Reset fields
-        setProductName('');
-        setDescription('');
-        setPrice('');
-        setStock('');
-        setSku('');
-        setImage(null);
-        setWeight('');
-        setDimensions({ length: '', width: '', height: '' });
-        setInProduction(false);
-        setCategory('');
-        showToast('success', 'Your product has been successfully added.');
-    };
 
+        const productData = {
+            productName,
+            description,
+            price,
+            stock,
+            sku,
+            image,
+            brand,
+            weight,
+            dimensions,
+            inProduction,
+            category,
+        };
+
+        try {
+            const response = await axios.post(`${API_BASE_URL}/addProduct`, productData, {
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            showToast('success', response.data.message);
+
+            // Reset fields
+            setProductName('');
+            setDescription('');
+            setPrice('');
+            setStock('');
+            setSku('');
+            setImage(null);
+            setWeight('');
+            setDimensions({ length: '', width: '', height: '' });
+            setInProduction(false);
+            setCategory('');
+        } catch (error) {
+            showToast('error', 'Error: Failed to add product!');
+            console.error(error);
+        }
+    };
     const styles = createStyles(isDarkMode);
 
     return (
@@ -258,7 +450,5 @@ const AddProducts = () => {
         </ScrollView>
     );
 };
-
-
 
 export default AddProducts;

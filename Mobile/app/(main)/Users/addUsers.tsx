@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import ToastMessage, { showToast } from '@/components/ToastMessage'; // Import Toast
 import styles from '@/Styles/User/addUser';
-
+import { useRouter } from 'expo-router';
 import { Alert } from 'react-native';
 
 
@@ -22,6 +22,7 @@ const API_BASE_URL = 'http://10.13.23.2:3000/api/v1/user'; // 🆕 Your backend 
 
 
 const AddUser = () => {
+    const router = useRouter();
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -37,7 +38,7 @@ const AddUser = () => {
     });
     const [image, setImage] = useState<string | null>(null);
 
-    const roles = ['Admin', 'Manager', 'Supplier', 'Worker'];
+    const roles = ['Admin', 'Manager', 'Worker'];
 
     const handleImagePick = async (): Promise<void> => {
         // Request permission
@@ -69,7 +70,7 @@ const AddUser = () => {
 
     const handleSubmit =async () => {
         if (!userName || !email || !phone || !password || !role || !cnic) {
-            showToast('error', 'Error: Please fill in all fields!');
+            showToast('error', 'Please fill in all fields!');
             return;
         }
 
@@ -100,8 +101,13 @@ const AddUser = () => {
                 headers: { 'Content-Type': 'application/json' },
             });
 
-            showToast('success', response.data.message);
+            // showToast('success', response.data.message);
+            showToast('success',"User Added");
 
+            setTimeout(() => {
+                router.replace("/Users/");
+            }, 3000); // 3 second delay
+            
             // Reset fields
             setUserName('');
             setEmail('');
@@ -118,7 +124,7 @@ const AddUser = () => {
             });
             setImage(null);
         } catch (error) {
-           showToast('error', 'Error: Failed to add user!');
+           showToast('error', 'Failed to add user!');
             console.error(error);
         }
     };

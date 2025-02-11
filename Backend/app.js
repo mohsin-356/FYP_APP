@@ -3,7 +3,8 @@ const app = express();
 const Path = require("path");
 const fs = require("fs");
 const uploadDir = Path.join(__dirname, "public/images/upload");
-if (!fs.existsSync(uploadDir)) {
+if (!fs.existsSync(uploadDir))
+{
   fs.mkdirSync(uploadDir, { recursive: true });
   console.log("Upload directory created:", uploadDir);
 }
@@ -13,6 +14,8 @@ const customError = require("./Utils/customError");
 const globalErrorHandler = require("./Controllers/errorController");
 
 const userRouter = require("./Routes/userRoutes");
+const productRouter = require("./Routes/productRouter");
+
 const cors = require("cors");
 const bodyParser = require("body-parser"); // Importing body-parser
 
