@@ -32,6 +32,7 @@ app.use(
 );
 
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/product", productRouter);
 
 app.all("*", (req, res, next) => {
   const err = new customError(
