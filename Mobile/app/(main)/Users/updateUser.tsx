@@ -92,28 +92,54 @@ const UpdateUser = () => {
         }
     };
 
+    // const handleUpdate = async () => {
+    //     if (!userName || !email || !phone || !role || !cnic) {
+    //         showToast("error", "Please fill in all fields.");
+    //         return;
+    //     }
+
+    //     const userData = {
+    //         userName,
+    //         email,
+    //         phone,
+    //         password,
+    //         role,
+    //         cnic,
+    //         address,
+    //         image,
+    //     };
+
+    //     try {
+    //         const response = await axios.patch(`${API_BASE_URL}/updateUser/${id}`, userData, {
+    //             headers: { "Content-Type": "application/json" },
+    //         });
+
+    //         showToast("success", response.data.message);
+    //         router.push("/Users"); // Navigate back to users list
+    //     } catch (error) {
+    //         showToast("error", "Failed to update user.");
+    //         console.error("Update error:", error);
+    //     }
+    // };
     const handleUpdate = async () => {
-        if (!userName || !email || !phone || !role || !cnic) {
-            showToast("error", "Please fill in all fields.");
+        if (!userName && !email && !phone && !role && !cnic) {
+            showToast("error", "Please provide at least one field to update.");
             return;
         }
-
-        const userData = {
-            userName,
-            email,
-            phone,
-            password,
-            role,
-            cnic,
-            address,
-            image,
-        };
-
+    
+        // Create an object and remove empty fields
+        const userData: Record<string, any> = { userName, email, phone, password, role, cnic, address, image };
+        Object.keys(userData).forEach((key) => {
+            if (!userData[key]) {
+                delete userData[key]; // Remove empty fields
+            }
+        });
+    
         try {
-            const response = await axios.put(`${API_BASE_URL}/updateUser/${id}`, userData, {
+            const response = await axios.patch(`${API_BASE_URL}/updateUser/${id}`, userData, {
                 headers: { "Content-Type": "application/json" },
             });
-
+    
             showToast("success", response.data.message);
             router.push("/Users"); // Navigate back to users list
         } catch (error) {
@@ -121,7 +147,7 @@ const UpdateUser = () => {
             console.error("Update error:", error);
         }
     };
-
+    
     if (loading) {
         return <Text>Loading...</Text>;
     }

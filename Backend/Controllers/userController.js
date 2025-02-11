@@ -11,7 +11,7 @@ const util = require("util");
 exports.addUser = async (req, res) => {
   const { userName, email, phone, password, role, cnic, address, image } =
     req.body;
-    // const imagePath = "/images/upload/" + req.file.filename;
+
     try {
       const user = await User.create({
         userName,
@@ -35,18 +35,47 @@ exports.addUser = async (req, res) => {
     }
     
 };
+// exports.updateUser = async (req, res) => {
+//   try {
+//       const { userName, email, phone, password, role, cnic, address,image } = req.body;
+//       // let image = req.body.image;
+
+//       // if (req.file) {
+//       //     image = "/images/upload/" + req.file.filename; // Update image if new one is uploaded
+//       // }
+// console.log(userName,email, phone, password, role, cnic, address,image);
+//       const updatedUser = await User.findByIdAndUpdate(
+//           req.params.id,
+//           { userName, email, phone, password, role, cnic, address, image },
+//           { new: true, runValidators: true }
+//       );
+
+//       if (!updatedUser) {
+//           return res.status(404).json({ status: "error", message: "User not found" });
+//       }
+
+//       res.status(200).json({ status: "success", data: updatedUser });
+//   } catch (error) {
+//       res.status(400).json({ status: "error", message: error.message });
+//   }
+// };
+
 exports.updateUser = async (req, res) => {
   try {
-      const { userName, email, phone, password, role, cnic, address,image } = req.body;
-      // let image = req.body.image;
+      console.log("Incoming PATCH Request:", req.body);
 
-      // if (req.file) {
-      //     image = "/images/upload/" + req.file.filename; // Update image if new one is uploaded
-      // }
+      const updateFields = {}; // Store only fields that were sent
+      const allowedFields = ["userName", "email", "phone", "password", "role", "cnic", "address", "image"];
+
+      allowedFields.forEach((field) => {
+          if (req.body[field] !== undefined) {
+              updateFields[field] = req.body[field];
+          }
+      });
 
       const updatedUser = await User.findByIdAndUpdate(
           req.params.id,
-          { userName, email, phone, password, role, cnic, address, image },
+          updateFields, // Update only provided fields
           { new: true, runValidators: true }
       );
 
@@ -56,10 +85,10 @@ exports.updateUser = async (req, res) => {
 
       res.status(200).json({ status: "success", data: updatedUser });
   } catch (error) {
+      console.error("Update User Error:", error);
       res.status(400).json({ status: "error", message: error.message });
   }
 };
-
 
 exports.getUsers=async(req, res)=>{
   try {

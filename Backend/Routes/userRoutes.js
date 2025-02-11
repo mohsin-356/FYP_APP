@@ -28,6 +28,6 @@ router.route("/getUsers").get(userController.getUsers);
 
 router.route("/getUser/:id").get(userController.getUser);
 router.route("/deleteUser/:id").delete(userController.deleteUser);
-router.route("/updateUser/:id").put(upload.single("image"), userController.updateUser);
+router.route("/updateUser/:id").patch(upload.single("image"), userController.updateUser);
             
 module.exports = router;

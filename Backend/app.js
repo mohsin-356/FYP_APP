@@ -26,7 +26,7 @@ app.use(express.static(Path.join(__dirname, "public")));
 app.use(
   cors({
     origin: "*", // Replace '*' with your allowed domain(s) in production.
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Specify allowed methods.
+    methods: ["GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"], // Specify allowed methods.
     allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers.
   })
 );
