@@ -120,7 +120,7 @@ export default function Layout() {
          <Drawer.Screen
           name="Orders"
           options={{
-            drawerItemStyle: { display: 'none' },
+            // drawerItemStyle: { display: 'none' },
             drawerLabel: 'Orders',
             headerTitle: 'Orders Panel',
             headerStyle: dynamicStyles.headerStyle,
@@ -132,7 +132,7 @@ export default function Layout() {
         <Drawer.Screen
           name="Suppliers"
           options={{
-            drawerItemStyle: { display: 'none' },
+            // drawerItemStyle: { display: 'none' },
             drawerLabel: 'Suppliers',
             headerTitle: 'Supplier Panel',
             headerStyle: dynamicStyles.headerStyle,
@@ -147,7 +147,7 @@ export default function Layout() {
         <Drawer.Screen
           name="Workers"
           options={{
-            drawerItemStyle: { display: 'none' },
+            // drawerItemStyle: { display: 'none' },
             drawerLabel: 'Workers',
             headerTitle: 'Workers Panel',
             headerStyle: dynamicStyles.headerStyle,

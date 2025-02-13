@@ -129,7 +129,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useSettings } from "@/themes/SettingsContext"; // Ensure this path is correct
 import createStyles from '@/Styles/Products/addProduct';
 import ToastMessage,{showToast} from '@/components/ToastMessage';
-const API_BASE_URL = 'http://10.13.23.2:3000/api/v1/product'; 
+const API_BASE_URL = 'http://10.13.44.191:3000/api/v1/product'; 
 const AddProducts = () => {
     const { isDarkMode } = useSettings();
     const [productName, setProductName] = useState('');
