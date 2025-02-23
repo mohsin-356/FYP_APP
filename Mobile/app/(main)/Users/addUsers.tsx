@@ -17,7 +17,7 @@ import { Alert } from 'react-native';
 
 
 import axios from 'axios'; // 🆕 Axios imported directly
-const API_BASE_URL = 'http://10.13.44.191:3000/api/v1/user'; // 🆕 Your backend API URL
+const API_BASE_URL = 'http://10.13.52.95:3000/api/v1/user'; // 🆕 Your backend API URL
 
 
 

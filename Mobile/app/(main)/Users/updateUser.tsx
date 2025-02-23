@@ -16,7 +16,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import axios from "axios";
 import styles from "@/Styles/User/updateUsers";
 
-const API_BASE_URL = "http://10.13.44.191:3000/api/v1/user";
+const API_BASE_URL = "http://10.13.52.95:3000/api/v1/user";
 
 const UpdateUser = () => {
     const router = useRouter();

@@ -13,7 +13,7 @@ import {
 import { Search, Filter, ChevronRight, Plus } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import styles from '@/Styles/User/user';
-const API_BASE_URL = 'http://10.13.44.191:3000/api/v1/user'; 
+const API_BASE_URL = 'http://10.13.52.95:3000/api/v1/user'; 
 const UserIndexPage = () => {
     interface User {
         _id: string;
