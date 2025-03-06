@@ -1,3 +1,4 @@
+import { IP_ADDRESS } from '@env';
 import React, { useState,useEffect } from 'react';
 import axios from 'axios'; 
 import {
@@ -13,7 +14,7 @@ import {
 import { Search, Filter, ChevronRight, Plus } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
 import styles from '@/Styles/User/user';
-const API_BASE_URL = 'http://10.13.52.95:3000/api/v1/user'; 
+const API_BASE_URL = `http://${IP_ADDRESS}:3000/api/v1/user`; 
 const UserIndexPage = () => {
     interface User {
         _id: string;
