@@ -1,3 +1,4 @@
+import { IP_ADDRESS } from '@env';
 import React, { useState, useEffect } from "react";
 import {
     View,
@@ -14,7 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import styles from "@/Styles/User/userProfile";
 import ToastMessage, { showToast } from "@/components/ToastMessage";
 
-const API_BASE_URL = "http://10.13.52.95:3000/api/v1/user"; // ✅ Make sure this matches your backend
+const API_BASE_URL = `http://${IP_ADDRESS}:3000/api/v1/user`; // ✅ Make sure this matches your backend
 
 const UserProfile = () => {
     interface User {

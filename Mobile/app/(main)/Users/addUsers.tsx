@@ -1,3 +1,4 @@
+import { IP_ADDRESS } from '@env';
 import React, { useState } from 'react';
 import {
     View,
@@ -17,7 +18,7 @@ import { Alert } from 'react-native';
 
 
 import axios from 'axios'; // 🆕 Axios imported directly
-const API_BASE_URL = 'http://10.13.52.95:3000/api/v1/user'; // 🆕 Your backend API URL
+const API_BASE_URL = `http://${IP_ADDRESS}:3000/api/v1/user`; // 🆕 Your backend API URL
 
 
 

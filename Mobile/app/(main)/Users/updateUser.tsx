@@ -1,3 +1,4 @@
+import { IP_ADDRESS } from '@env';
 import React, { useState, useEffect } from "react";
 import {
     View,
@@ -16,7 +17,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import axios from "axios";
 import styles from "@/Styles/User/updateUsers";
 
-const API_BASE_URL = "http://10.13.52.95:3000/api/v1/user";
+const API_BASE_URL = `http://${IP_ADDRESS}:3000/api/v1/user`;
 
 const UpdateUser = () => {
     const router = useRouter();
